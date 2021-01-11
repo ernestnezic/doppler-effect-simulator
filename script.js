@@ -1,3 +1,11 @@
+/*************
+* Doppler Effect Simulator Project
+* Razvili: F.Zarkovic & E.Nezic
+* Visoko učilište Algebra, Multimedijsko Računarstvo, 1RM1
+* Mentor: Goran Đambić
+**************/
+
+
 const cvs = document.getElementById("myCanvas");
 cvs.height = window.innerHeight*0.7;
 cvs.width = window.innerWidth;
