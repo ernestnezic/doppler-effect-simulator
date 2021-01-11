@@ -200,8 +200,8 @@ function canvasAnimation(){
         
 
         //Parsanje varijabli
-        sourceSpeed = parseInt(sourceSpeed)
-        listenerCalculation = parseInt(listenerSpeed)*-1;
+        sourceSpeed = parseInt( sourceSpeed )
+        listenerCalculation = Math.abs(parseInt( listenerSpeed ));
         
         //Promjena i primjena formule  ukoliko se izvor približava/udaljava od slušatelja
         if( source.x <= listener.x ){
