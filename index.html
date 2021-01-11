@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doppler</title>
+    <link rel="stylesheet" type="text/css" href="CSS/style.css">
+</head>
+<body>
+    <canvas id="myCanvas"></canvas>
+    <div id="sliders">
+        <div class="slidecontainer" id="sourceSpeed">
+            <input type="range" min="-343" max="686" value="274" class="slider" id="mySource">
+        </div>
+        <div class="slidecontainer" id="observerSpeed">
+            <input type="range" min="-343" max="343" value="-21" class="slider" id="myListener">
+        </div>
+    </div>
+    <div id="actionButtons">
+        <button type="button" onclick="play()">RESI!</button>
+        <button type="button" onclick="stop()">NE RESI!</button>
+        <button type="button" onclick="remake()">RE RESI!</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

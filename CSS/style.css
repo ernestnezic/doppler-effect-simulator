@@ -1,0 +1,16 @@
+#sliders{
+    display: flex;
+    position: relative;
+    justify-content: center;
+}
+#actionButtons{
+    display: flex;
+    position: relative;
+    justify-content: center;
+}
+.slider{
+    width: 30vw;
+}
+#mySource{
+    color:crimson;
+}
