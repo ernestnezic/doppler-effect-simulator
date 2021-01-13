@@ -15,10 +15,10 @@ const sliderListener = document.getElementById( "myListener" );
 //Deklariranje globalnih varijabli
 const context = cvs.getContext( "2d" );
 
-let sourceSpeed = sliderSource.value;
+let sourceSpeed = parseInt(sliderSource.value);
 let sourceFrequency = 20;
 
-let listenerSpeed = sliderListener.value;
+let listenerSpeed = parseInt(sliderListener.value);
 
 let circles = [];
 
@@ -27,8 +27,8 @@ let perceivedFrequency = 0;
 
 
 //Podešavanje dimenzija canvas objekta
-cvs.height = window.innerHeight * 0.7;
-cvs.width = window.innerWidth;
+cvs.height = window.innerHeight * 0.85;
+cvs.width = window.innerWidth-15;
 
 
 /**
@@ -65,12 +65,13 @@ function CreateCircle( x1, y1, rad, r, g, b, opacity, fill ) {
  * @param {number} x - Horizontalna pozicija teksta
  * @param {number} y - vertikalna pozicija teksta
  * @param {string} color - Boja teksta
+ * @param {string} alignment - Boja teksta
  */
-function DrawText( text, size, x, y, color ){
+function DrawText( text, size, x, y, color, alignment){
     
     context.fillStyle = color;
     context.font = size+"px Arial";
-    context.textAlign = "center";
+    context.textAlign = alignment;
     context.fillText(text,x,y);
 
 }
@@ -108,7 +109,7 @@ const source = new Circle(window.innerWidth/4, window.innerHeight/4, true);
 //Mjenjanje draw() funkcije- dodavanje teksta za ispis "Izvor"
 source.draw = function(){
     CreateCircle(this.x,this.y,this.rad,this.r,this.g,this.b,this.opacity,this.fill);
-    DrawText("Source",15,this.x,this.y-5,"crimson");
+    DrawText("Source",15,this.x,this.y-5,"crimson","center");
 }
 source.rad = 2;
 
@@ -122,7 +123,7 @@ listener.b = 255;
 //Mjenjanje draw() funkcije- dodavanje teksta za ispis "Slušatelj"
 listener.draw = function(){
     CreateCircle(this.x,this.y,this.rad,this.r,this.g,this.b,this.opacity,this.fill);
-    DrawText("Observer",15,this.x,this.y-5,"dodgerblue");
+    DrawText("Observer",15,this.x,this.y-5,"dodgerblue","center");
 }
 
 
@@ -141,18 +142,18 @@ function stop() {
 
 //Resetiranje animacije
 function remake() {
-    source.x = window.innerWidth/16;
-    listener.x = window.innerWidth/16 * 15;
+    source.x = window.innerWidth/4;
+    listener.x = window.innerWidth/4 * 3;
     circles = [];
 }
 
 
 //Event listeneri za slidere
 sliderSource.oninput = function(){
-    sourceSpeed = this.value;
+    sourceSpeed = parseInt(this.value);
 }
 sliderListener.oninput = function(){
-    listenerSpeed = this.value;
+    listenerSpeed = parseInt(this.value);
 }
 
 
@@ -200,26 +201,50 @@ function canvasAnimation(){
         
 
         //Parsanje varijabli
-        sourceSpeed = parseInt( sourceSpeed )
-        listenerCalculation = Math.abs(parseInt( listenerSpeed ));
+        sourceCalculation = Math.abs(sourceSpeed);
+        listenerCalculation = Math.abs(listenerSpeed);
         
         //Promjena i primjena formule  ukoliko se izvor približava/udaljava od slušatelja
         if( source.x <= listener.x ){
-            perceivedFrequency = 343*((343+listenerCalculation)/(343-sourceSpeed));
+            if( ( sourceSpeed > 0 && listenerSpeed < 0 ) ){
+                //Izvor i slušatelj se približavaju
+                perceivedFrequency = 343*((343+listenerCalculation)/(343-sourceCalculation));
+            }else if( ( sourceSpeed > 0 && listenerSpeed > 0 ) ){
+                //Izvor se približava slušatelju, a slušatelj se udaljava od izvora
+                perceivedFrequency = 343*((343-listenerCalculation)/(343-sourceCalculation));
+            }else if( ( sourceSpeed < 0 && listenerSpeed < 0 ) ){
+                //Slušatelj se približava izvoru, a izvor se udaljava od slušatelja
+                perceivedFrequency = 343*((343+listenerCalculation)/(343+sourceCalculation));
+            }else{
+                //Izvor i slušatelj se razdvajaju
+                perceivedFrequency = 343*((343-listenerCalculation)/(343+sourceCalculation));
+            }
             perceivedLambda = 343/perceivedFrequency;
         }else{
-            perceivedFrequency = 343*((343-listenerCalculation)/(343+sourceSpeed));
+            if( ( sourceSpeed > 0 && listenerSpeed < 0 ) ){
+                //Izvor i slušatelj se razdvajaju
+                perceivedFrequency = 343*((343-listenerCalculation)/(343+sourceCalculation));
+            }else if( ( sourceSpeed > 0 && listenerSpeed > 0 ) ){
+                //Slušatelj se približava izvoru, a izvor se udaljava od slušatelja
+                perceivedFrequency = 343*((343+listenerCalculation)/(343+sourceCalculation));
+            }else if( ( sourceSpeed < 0 && listenerSpeed < 0 ) ){
+                //Izvor se približava slušatelju, a slušatelj se udaljava od izvora
+                perceivedFrequency = 343*((343-listenerCalculation)/(343-sourceCalculation));
+            }else{
+                //Izvor i slušatelj se približavaju
+                perceivedFrequency = 343*((343+listenerCalculation)/(343-sourceCalculation));
+            }
             perceivedLambda = 343/perceivedFrequency;
         }
 
         //Korištenje formula Dopplerovog efekta i pozivanje njihovog ispisa
-        DrawText("Source Velocity = "+sourceSpeed+" m/s",15,cvs.width*0.35,cvs.height-5,"crimson");
+        DrawText("Source Velocity = "+sourceSpeed+" m/s",15,cvs.width*0.35,cvs.height-5,"crimson","center");
         DrawText("Observer Velocity = "+listenerSpeed+" m/s",15,cvs.width*0.65,cvs.height-5,"dodgerblue");
-        DrawText("Brziva zvuka = 343 m/s",15,cvs.width*0.1,cvs.height-45,"black");
-        DrawText("Frekvencija izvora = 343 Hz",15,cvs.width*0.1,cvs.height-25,"black");
-        DrawText("Valna duljina izvora = 1 m",15,cvs.width*0.1,cvs.height-5,"black");
-        DrawText("Opazena valna duljina = "+perceivedLambda.toFixed(2)+" m",15,cvs.width*0.9,cvs.height-25,"magenta");
-        DrawText("Opazena frekvencija = "+perceivedFrequency.toFixed(2)+"Hz",15,cvs.width*0.9,cvs.height-5,"magenta");
+        DrawText("Brziva zvuka = 343 m/s",15,0,cvs.height-65,"black","left");
+        DrawText("Frekvencija izvora = 343 Hz",15,0,cvs.height-45,"black","left");
+        DrawText("Valna duljina izvora = 1 m",15,0,cvs.height-25,"black","left");
+        DrawText("Opazena valna duljina = "+perceivedLambda.toFixed(2)+" m",15,cvs.width,cvs.height-45,"magenta","right");
+        DrawText("Opazena frekvencija = "+perceivedFrequency.toFixed(2)+"Hz",15,cvs.width,cvs.height-25,"magenta","right");
         source.draw();
         listener.draw();
         
