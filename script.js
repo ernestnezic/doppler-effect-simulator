@@ -109,7 +109,7 @@ const source = new Circle(window.innerWidth/4, window.innerHeight/4, true);
 //Mjenjanje draw() funkcije- dodavanje teksta za ispis "Izvor"
 source.draw = function(){
     CreateCircle(this.x,this.y,this.rad,this.r,this.g,this.b,this.opacity,this.fill);
-    DrawText("Source",15,this.x,this.y-5,"crimson","center");
+    DrawText("Izvor",15,this.x,this.y-5,"crimson","center");
 }
 source.rad = 2;
 
@@ -123,7 +123,7 @@ listener.b = 255;
 //Mjenjanje draw() funkcije- dodavanje teksta za ispis "Slušatelj"
 listener.draw = function(){
     CreateCircle(this.x,this.y,this.rad,this.r,this.g,this.b,this.opacity,this.fill);
-    DrawText("Observer",15,this.x,this.y-5,"dodgerblue","center");
+    DrawText("Slušatelj",15,this.x,this.y-5,"dodgerblue","center");
 }
 
 
@@ -238,9 +238,9 @@ function canvasAnimation(){
         }
 
         //Korištenje formula Dopplerovog efekta i pozivanje njihovog ispisa
-        DrawText("Source Velocity = "+sourceSpeed+" m/s",15,cvs.width*0.35,cvs.height-5,"crimson","center");
-        DrawText("Observer Velocity = "+listenerSpeed+" m/s",15,cvs.width*0.65,cvs.height-5,"dodgerblue");
-        DrawText("Brziva zvuka = 343 m/s",15,0,cvs.height-65,"black","left");
+        DrawText("Brzina izvora = "+sourceSpeed+" m/s",15,cvs.width*0.35,cvs.height-5,"crimson","center");
+        DrawText("Brzina slušatelja = "+listenerSpeed+" m/s",15,cvs.width*0.65,cvs.height-5,"dodgerblue");
+        DrawText("Brzina zvuka = 343 m/s",15,0,cvs.height-65,"black","left");
         DrawText("Frekvencija izvora = 343 Hz",15,0,cvs.height-45,"black","left");
         DrawText("Valna duljina izvora = 1 m",15,0,cvs.height-25,"black","left");
         DrawText("Opazena valna duljina = "+perceivedLambda.toFixed(2)+" m",15,cvs.width,cvs.height-45,"magenta","right");
